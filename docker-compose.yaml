@@ -12,6 +12,8 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - valoriza-network
+    ports:
+      - 5432:5432
 
   adminer:
     image: adminer
@@ -24,18 +26,17 @@ services:
 
   valoriza:
     stdin_open: true
-    build:
-      context: .
-      target: development
+    image: node:16.14.2
     command: npm run dev
     container_name: valoriza
+    working_dir: /srv/valoriza/
     volumes:
       - .:/srv/valoriza
-      - valoriza_node_modules:/srv/valoriza/node_modules
+      # - valoriza_node_modules:/srv/valoriza/node_modules
     depends_on:
       - postgres
     ports:
-      - "3333:3333"
+      - 3333:3333
     networks:
       - valoriza-network
 
@@ -46,4 +47,4 @@ networks:
 volumes:
   postgres-data:
     driver: local
-  valoriza_node_modules:
+  # valoriza_node_modules:

@@ -1,0 +1,44 @@
+# ----------------------DEVELOPMENT------------------------
+FROM node:16.14.2 AS development
+
+# Making sure application directory is owned by 'node' user
+RUN mkdir /srv/valoriza && chown node:node /srv/valoriza
+
+# This avoid to use 'root' user (good practice)
+USER node
+
+WORKDIR /srv/valoriza
+
+# Copy only dependencies installation files, so Docker can cache 'node_modules'
+COPY --chown=node:node package.json package-lock.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy prisma directory
+COPY --chown=node:node prisma ./prisma/
+
+# Copy env and typescript config files
+COPY --chown=node:node .env tsconfig.json ./
+
+# Generate prisma client
+RUN npx prisma generate
+
+# ----------------------PRODUCTION-------------------------
+FROM node:16.14.2-slim AS production
+RUN apt-get update && apt-get install dumb-init
+
+USER node
+
+WORKDIR /srv/valoriza
+
+# This COPY is taking advantage of the 'node_modules' build previously at development
+COPY --from=development --chown=node:node /srv/valoriza/node_modules ./node_modules
+
+COPY . .
+
+EXPOSE 3333
+
+RUN ls /srv/valoriza
+
+CMD ["npm", "run", "start:migrate"]
