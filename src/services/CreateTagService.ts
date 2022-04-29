@@ -9,23 +9,24 @@ interface ITagRequest {
 class CreateTagService {
   async execute({ name }: ITagRequest) {
     if (!name) {
-      throw new Error("Name incorrect");
+      throw new Error('Name incorrect');
     }
 
-    const tagAlreadyExists = await prisma.tags.count({
-      where: {
-        name
-      }
-    }) > 0;
+    const tagAlreadyExists =
+      (await prisma.tags.count({
+        where: {
+          name,
+        },
+      })) > 0;
 
     if (tagAlreadyExists) {
-      throw new Error("Tag already exists");
+      throw new Error('Tag already exists');
     }
 
     const newTag = prisma.tags.create({
       data: {
         name,
-      }
+      },
     });
 
     return newTag;

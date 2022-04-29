@@ -27,7 +27,7 @@ services:
   valoriza:
     stdin_open: true
     image: node:16.14.2
-    command: npm run dev
+    # command: npm run dev
     container_name: valoriza
     working_dir: /srv/valoriza/
     volumes:
