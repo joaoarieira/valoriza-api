@@ -11,9 +11,10 @@ datasource db {
 }
 
 model Users {
-  id        String   @id @default(uuid()) @db.VarChar()
-  name      String   @db.VarChar()
-  email     String   @db.VarChar()
+  id        String   @id @default(uuid())
+  name      String
+  password  String
+  email     String
   admin     Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -22,8 +23,8 @@ model Users {
 }
 
 model Tags {
-  id        String   @id @default(uuid()) @db.VarChar()
-  name      String   @db.VarChar()
+  id        String   @id @default(uuid())
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
