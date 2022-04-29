@@ -10,23 +10,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id        String   @id @default(uuid())
-  name      String
-  password  String
-  email     String
-  admin     Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  password   String
+  email      String
+  admin      Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  compliments_sended   Compliment[] @relation("user_complements_sended")
+  compliments_received Compliment[] @relation("user_complements_received")
 
   @@map("users")
 }
 
-model Tags {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Tag {
+  id         String   @id @default(uuid())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  compliments Compliment[]
 
   @@map("tags")
+}
+
+model Compliment {
+  id               String   @id @default(uuid())
+  user_sender_id   String
+  user_receiver_id String
+  tag_id           String
+  message          String
+  created_at       DateTime @default(now())
+
+  user_sender   User @relation(name: "user_complements_sended", fields: [user_sender_id], references: [id])
+  user_receiver User @relation(name: "user_complements_received", fields: [user_receiver_id], references: [id])
+  tag           Tag  @relation(fields: [tag_id], references: [id])
+
+  @@map("compliments")
 }

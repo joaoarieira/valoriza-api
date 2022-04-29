@@ -13,7 +13,7 @@ class CreateTagService {
     }
 
     const tagAlreadyExists =
-      (await prisma.tags.count({
+      (await prisma.tag.count({
         where: {
           name,
         },
@@ -23,7 +23,7 @@ class CreateTagService {
       throw new Error('Tag already exists');
     }
 
-    const newTag = prisma.tags.create({
+    const newTag = prisma.tag.create({
       data: {
         name,
       },

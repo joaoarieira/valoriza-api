@@ -9,7 +9,7 @@ interface IAuthenticateRequest {
 
 class AuthenticateUserService {
   async execute({ email, password }: IAuthenticateRequest) {
-    const user = await prisma.users.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         email,
       },
