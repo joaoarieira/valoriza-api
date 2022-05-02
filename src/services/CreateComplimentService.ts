@@ -23,10 +23,21 @@ class CreateComplimentService {
       throw new Error('All ids must be UUID');
     }
 
-    const isValidUserSender = user_receiver_id !== user_sender_id;
+    const isSenderDifferentFromReceiver = user_receiver_id !== user_sender_id;
+
+    if (!isSenderDifferentFromReceiver) {
+      throw new Error('user_sender_id must be different from user_receiver_id');
+    }
+
+    const isValidUserSender =
+      (await prisma.user.count({
+        where: {
+          id: user_sender_id,
+        },
+      })) > 0;
 
     if (!isValidUserSender) {
-      throw new Error('user_sender_id must be different from user_receiver_id');
+      throw new Error('User related to user_sender_id does not exists');
     }
 
     const isValidUserReceiver =

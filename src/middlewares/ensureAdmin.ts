@@ -1,17 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
+import { prisma } from '../database/prismaClient';
 
-export function ensureAdmin(
+export async function ensureAdmin(
   request: Request,
   response: Response,
   next: NextFunction
 ) {
-  const admin = true;
+  const { user_id } = request;
 
-  if (admin) {
-    return next();
+  const userRequesting = await prisma.user.findFirst({
+    where: { id: user_id },
+  });
+
+  if (!userRequesting.admin) {
+    return response.status(403).json({
+      error: 'Forbidden',
+    });
   }
 
-  return response.status(401).json({
-    error: 'Unauthorized',
-  });
+  return next();
 }
