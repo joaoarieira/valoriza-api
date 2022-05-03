@@ -11,12 +11,14 @@ import { ListTagsController } from './controllers/ListTagsController';
 import { UpdateTagController } from './controllers/UpdateTagController';
 import { DeleteTagController } from './controllers/DeleteTagController';
 import { ListUsersController } from './controllers/ListUsersController';
+import { UpdateUserController } from './controllers/UpdateUserController';
 
 const router = Router();
 
 const authenticateUserController = new AuthenticateUserController();
 const createUserController = new CreateUserController();
 const listUsersController = new ListUsersController();
+const updateUserController = new UpdateUserController();
 
 const createTagController = new CreateTagController();
 const listTagsController = new ListTagsController();
@@ -33,6 +35,7 @@ const listComplimentsSendedByUserController =
 router.post('/login', authenticateUserController.handle);
 router.post('/users', createUserController.handle);
 router.get('/users', ensureAuthenticated, listUsersController.handle);
+router.put('/users/:id', ensureAuthenticated, updateUserController.handle);
 
 // -- TAGS --
 router.post(

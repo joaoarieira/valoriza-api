@@ -2,12 +2,11 @@ import { validate } from 'uuid';
 import { prisma } from '../database/prismaClient';
 
 interface IUpdateTagRequest {
-  id: string;
   name?: string;
 }
 
 class UpdateTagService {
-  async execute({ id, name }: IUpdateTagRequest) {
+  async execute(id: string, { name }: IUpdateTagRequest) {
     if (!name || name.length === 0) {
       throw new Error('invalid name');
     }

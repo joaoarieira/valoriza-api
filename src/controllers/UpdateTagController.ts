@@ -9,7 +9,7 @@ class UpdateTagController {
     } = request;
     const updateTagService = new UpdateTagService();
 
-    const newTag = await updateTagService.execute({ id, name });
+    const newTag = await updateTagService.execute(id, { name });
 
     return response.json(newTag);
   }
