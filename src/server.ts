@@ -2,6 +2,8 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import morgan from 'morgan';
+import { Prisma } from '@prisma/client';
+
 import { router } from './routes';
 
 const app: Application = express();
@@ -17,6 +19,11 @@ app.use(router);
 app.use(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (err: Error, request: Request, response: Response, next: NextFunction) => {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      const errorMessage = err.message.split('\n').at(-1)?.trim();
+      return response.status(400).json({ error: errorMessage });
+    }
+
     if (err instanceof Error) {
       return response.status(400).json({
         error: err.message,

@@ -16,15 +16,15 @@ class UpdateTagService {
       throw new Error('id must be UUID');
     }
 
-    const tag = await prisma.tag.findFirst({ where: { id } });
+    // const tag = await prisma.tag.findFirst({ where: { id } });
 
-    if (!tag) {
-      throw new Error('Tag related to id does not exists');
-    }
+    // if (!tag) {
+    //   throw new Error('Tag related to id does not exists');
+    // }
 
-    if (tag.name === name) {
-      throw new Error('There is already a tag with this name');
-    }
+    // if (tag.name === name) {
+    //   throw new Error('There is already a tag with this name');
+    // }
 
     const newTag = await prisma.tag.update({ where: { id }, data: { name } });
 

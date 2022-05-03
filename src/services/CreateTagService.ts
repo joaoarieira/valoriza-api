@@ -12,16 +12,16 @@ class CreateTagService {
       throw new Error('Name incorrect');
     }
 
-    const tagAlreadyExists =
-      (await prisma.tag.count({
-        where: {
-          name,
-        },
-      })) > 0;
+    // const tagAlreadyExists =
+    //   (await prisma.tag.count({
+    //     where: {
+    //       name,
+    //     },
+    //   })) > 0;
 
-    if (tagAlreadyExists) {
-      throw new Error('Tag already exists');
-    }
+    // if (tagAlreadyExists) {
+    //   throw new Error('Tag already exists');
+    // }
 
     const newTag = prisma.tag.create({
       data: {

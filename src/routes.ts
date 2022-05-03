@@ -9,6 +9,7 @@ import { ListComplimentsReceivedByUserController } from './controllers/ListCompl
 import { ListComplimentsSendedByUserController } from './controllers/ListComplimentsSendedByUserController';
 import { ListTagsController } from './controllers/ListTagsController';
 import { UpdateTagController } from './controllers/UpdateTagController';
+import { DeleteTagController } from './controllers/DeleteTagController';
 
 const router = Router();
 
@@ -18,6 +19,7 @@ const createUserController = new CreateUserController();
 const createTagController = new CreateTagController();
 const listTagsController = new ListTagsController();
 const updateTagController = new UpdateTagController();
+const deleteTagController = new DeleteTagController();
 
 const createComplimentController = new CreateComplimentController();
 const listComplimentsReceivedByUserController =
@@ -40,6 +42,12 @@ router.put(
   ensureAuthenticated,
   ensureAdmin,
   updateTagController.handle
+);
+router.delete(
+  '/tags/:id',
+  ensureAuthenticated,
+  ensureAdmin,
+  deleteTagController.handle
 );
 
 router.post(
