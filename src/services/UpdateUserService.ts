@@ -28,7 +28,7 @@ class UpdateUserService {
     }
 
     const dataToUpdate = deleteUndefinedFields(data);
-    console.log(dataToUpdate);
+
     const updatedUser = await prisma.user.update({
       where: { id },
       data: { ...dataToUpdate },
