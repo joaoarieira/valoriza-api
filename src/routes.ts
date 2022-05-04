@@ -13,6 +13,7 @@ import { DeleteTagController } from './controllers/DeleteTagController';
 import { ListUsersController } from './controllers/ListUsersController';
 import { UpdateUserController } from './controllers/UpdateUserController';
 import { DeleteUserController } from './controllers/DeleteUserController';
+import { DeleteComplimentController } from './controllers/DeleteComplimentController';
 
 const router = Router();
 
@@ -32,6 +33,7 @@ const listComplimentsReceivedByUserController =
   new ListComplimentsReceivedByUserController();
 const listComplimentsSendedByUserController =
   new ListComplimentsSendedByUserController();
+const deleteComplimentController = new DeleteComplimentController();
 
 // -- USERS --
 router.post('/login', authenticateUserController.handle);
@@ -76,6 +78,11 @@ router.get(
   '/compliments/sended/:user_sender_id',
   ensureAuthenticated,
   listComplimentsSendedByUserController.handle
+);
+router.delete(
+  '/compliments/:id',
+  ensureAuthenticated,
+  deleteComplimentController.handle
 );
 
 export { router };
